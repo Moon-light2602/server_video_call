@@ -1,6 +1,6 @@
 const {meeting} = require("../models/meeting.model");
 const {meetingUser} = require("../models/meeting-user.model");
-
+// const mongoose = require('mongoose');
 async function getAllMeetingUsers(meetId, callback) {
     meetingUser.find({meetingId: meetId})
     .then((response) => {
@@ -50,7 +50,7 @@ async function isMeetingPresent(meetingId, callback) {
 }
 
 async function checkMeetingExisits(meetingId, callback) {
-    meeting.findById(meetingId, "hostId, hostName, startTime")
+    meeting.findById(meetingId)
     .populate("meetingUsers", "MeetingUser")
     .then((response) => {
         if(!response) callback("Invalid Meeting Id");
@@ -60,6 +60,8 @@ async function checkMeetingExisits(meetingId, callback) {
         return callback(error, false)
     });
 }
+
+
 
 async function getMeetingUser(params, callback) {
     const { meetingId, userId } = params;

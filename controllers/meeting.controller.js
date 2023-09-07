@@ -1,7 +1,10 @@
 const meetingServices = require("../services/meeting.service");
 
 exports.startMeeting = (req, res, next) => {
+
     const {hostId, hostName} = req.body;
+
+    // console.log( "hostId"+ hostId)
 
     var model = {
         hostId: hostId,
@@ -22,7 +25,7 @@ exports.startMeeting = (req, res, next) => {
 
 exports.checkMeetingExists = (req, res, next) => {
     const {meetingId} = req.query;
-
+    // console.log("meetingId" + meetingId)
     meetingServices.checkMeetingExisits(meetingId, (error, results) => {
         if(error) {
             return next(error);

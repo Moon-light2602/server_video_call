@@ -11,7 +11,7 @@ const meetingUser = mongoose.model(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Meeting"
         },
-        UserId: {
+        userId: {
             type: String,
             required: true
         },
@@ -29,7 +29,7 @@ const meetingUser = mongoose.model(
         },
         
     }, 
-    {timestaps: true})
+    {timestamps: true})
 );
 
 module.exports = {

@@ -1,5 +1,7 @@
 const MONGO_DB_CONFIG = {
-    DB: "mongodb://127.0.0.1:27017/meeting-app"
+    // DB: "mongodb://10.5.11.158:27017/meeting-app"
+    DB: "mongodb+srv://myduyen:SzrGND2l8UmsBmY9@cluster0.eweryrh.mongodb.net/meeting-app?retryWrites=true&w=majority"
+    // DB: "mongodb+srv://vinaking:ihv7ceciiu0brdjm@vinaking.sovrn5e.mongodb.net/meeting-app?retryWrites=true&w=majority"
 };
 
 module.exports = {

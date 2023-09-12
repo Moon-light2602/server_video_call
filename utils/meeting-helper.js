@@ -4,16 +4,22 @@ const {MeetingPayloadEnum} = require("../utils/meeting-payload.enum");
 async function joinMeeting(meetingId, socket, meetingServer, payload) {
     const {userId, name} = payload.data;
 
+    console.log("meeting-service: joinMeeting: " + userId);
+    
     meetingServices.isMeetingPresent(meetingId, async(error, results) => {
         if(error && !results) {
+            console.log("meeting-service: joinMeeting: error" + error);
             sendMessage(socket, {
                 type: MeetingPayloadEnum.NOT_FOUND
             });
         }
 
         if(results){
+            console.log("meeting-service: joinMeeting: isMeetingPresent");
             addUser(socket, {meetingId, userId, name}).then((result) => {
+                console.log("meeting-service: joinMeeting: addUser "+ {meetingId, userId, name});
                 if(result) {
+                    console.log("meeting-service: joinMeeting: addUser ok");
                     sendMessage(socket, {
                         type: MeetingPayloadEnum.JOINED_MEETING, data: {
                             userId
@@ -29,6 +35,7 @@ async function joinMeeting(meetingId, socket, meetingServer, payload) {
                     });
                 }
             }, (error) => {
+                console.log("meeting-service: joinMeeting: error " + error);
                 console.log(error);
             });
         }
@@ -150,10 +157,10 @@ function endMeeting(meetingId, socket, meetingServer, payload) {
     });
 
     meetingServices.getAllMeetingUsers(meetingId, (error, results) => {
-        for(let i = 0; i < results.length; i++) {
-            const meetingUser = results[i];
-            meetingServer.sockets.connected[meetingUser.socketId].disconnect();
-        }
+        // for(let i = 0; i < results.length; i++) {
+        //     const meetingUser = results[i];
+        //     meetingServer.sockets.connected[meetingUser.socketId].disconnect();
+        // }
     });
 }
 
@@ -170,6 +177,7 @@ function forwardEvent(meetingId, socket, meetingServer, payload) {
 }
 
 function addUser(socket, { meetingId, userId, name}) {
+    console.log("meeting-helper: addUser " +  { meetingId, userId, name});
     let promise = new Promise(function (resolve, reject) {
         meetingServices.getMeetingUser({meetingId, userId}, (error, results) => {
             if(!results) {
@@ -177,7 +185,7 @@ function addUser(socket, { meetingId, userId, name}) {
                     socketId: socket.id,
                     meetingId: meetingId,
                     userId: userId,
-                    joinded: true,
+                    joined: true,
                     name: name,
                     isAlive: true
                 };
